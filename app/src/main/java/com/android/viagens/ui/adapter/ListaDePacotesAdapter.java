@@ -10,17 +10,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
 import com.android.viagens.R;
 import com.android.viagens.model.Pacote;
+import com.android.viagens.utils.DiasUtil;
 import com.android.viagens.utils.MoedaUtil;
+import com.android.viagens.utils.ResourcesUtil;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class ListaDePacotesAdapter extends BaseAdapter {
 
@@ -73,34 +69,14 @@ public class ListaDePacotesAdapter extends BaseAdapter {
 
     private void mostraDias(View viewCriada, Pacote pacote) {
         TextView dias = viewCriada.findViewById(R.id.item_pacote_dias);
-        String diasEmTexto = formataDiasEmTexto(pacote);
+        String diasEmTexto = DiasUtil.formataEmTexto(pacote.getDias());
         dias.setText(diasEmTexto);
-    }
-
-    @NonNull
-    private String formataDiasEmTexto(Pacote pacote) {
-        String diasEmTexto = "";
-        int quantidadeDeDias = pacote.getDias();
-        if (quantidadeDeDias > 1) {
-            diasEmTexto = quantidadeDeDias + " dias";
-        } else {
-            diasEmTexto = quantidadeDeDias + " dia";
-        }
-        return diasEmTexto;
     }
 
     private void mostraImagem(View viewCriada, Pacote pacote) {
         ImageView imagem = viewCriada.findViewById(R.id.item_pacote_imagem);
-        Drawable drawableImagemPacote = devolveDrawable(pacote);
+        Drawable drawableImagemPacote = ResourcesUtil.devolveDrawable(context, pacote.getImagem());
         imagem.setImageDrawable(drawableImagemPacote);
-    }
-
-    private Drawable devolveDrawable(Pacote pacote) {
-        Resources resources = context.getResources();
-        int idDoDrawable = resources.getIdentifier(pacote.getImagem()
-                , "drawable", context.getPackageName());
-        Drawable drawableImagemPacote = resources.getDrawable(idDoDrawable);
-        return drawableImagemPacote;
     }
 
     private void mostraLocal(View viewCriada, Pacote pacote) {
